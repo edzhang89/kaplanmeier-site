@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Kaplan Meier</title>
+<meta name="description" content="A private travel advisory for physicians and their families. New clients join by introduction.">
+<link rel="canonical" href="https://kaplanmeier.com/">
+<meta property="og:title" content="Kaplan Meier">
+<meta property="og:description" content="A private travel advisory for physicians and their families. New clients join by introduction.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kaplanmeier.com/">
+<meta name="theme-color" content="#F6F1E7">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpath d='M12 22H48V54H84V86H108' fill='none' stroke='%23142838' stroke-width='12'/%3E%3Cpath d='M62 40V68' stroke='%238E3B2C' stroke-width='12'/%3E%3C/svg%3E">
+<style>
+  :root {
+    --paper: #F6F1E7;
+    --ink: #142838;
+    --ink-soft: #29465C;
+    --slate: #4A5A66;
+    --stone: #CFC6B3;
+    --madder: #8E3B2C;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-padding-top: 84px; }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: "Iowan Old Style", "Palatino Linotype", Palatino, Georgia, "Times New Roman", serif;
+    font-size: 17.5px;
+    line-height: 1.75;
+  }
+  ::selection { background: var(--madder); color: var(--paper); }
+  a { color: var(--ink); text-decoration: none; }
+  a:focus-visible { outline: 2px solid var(--madder); outline-offset: 3px; }
+
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 10;
+    background: var(--paper);
+    border-bottom: 1px solid var(--stone);
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 16px 28px;
+    gap: 16px;
+  }
+  .topbar .brand { font-size: 13px; letter-spacing: 0.34em; white-space: nowrap; }
+  .topbar nav { display: flex; gap: 26px; flex-wrap: wrap; }
+  .topbar nav a {
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--slate);
+  }
+  .topbar nav a:hover { color: var(--madder); }
+  @media (max-width: 560px) {
+    .topbar { padding: 13px 18px; }
+    .topbar nav { gap: 15px; }
+  }
+
+  .sheet { max-width: 660px; margin: 0 auto; padding: 160px 26px 60px; }
+
+  .rule-double { border-top: 3px double var(--ink); }
+
+  .masthead { text-align: center; }
+  .masthead .wordmark {
+    font-size: clamp(30px, 6vw, 44px);
+    letter-spacing: 0.22em;
+    font-weight: 500;
+    margin: 40px 0 0;
+  }
+
+  figure.fig { margin: 48px 0 0; text-align: center; }
+  .fig svg { width: min(500px, 92%); height: auto; overflow: visible; }
+  .fig .stroke { stroke: var(--ink); }
+  .fig .tick { stroke: var(--madder); }
+  @media (prefers-reduced-motion: no-preference) {
+    .fig .stroke {
+      stroke-dasharray: 1200; stroke-dashoffset: 1200;
+      animation: draw 1.8s cubic-bezier(.4,0,.2,1) .3s forwards;
+    }
+    .fig .tick { opacity: 0; animation: appear .5s ease-out 2s forwards; }
+  }
+  @keyframes draw { to { stroke-dashoffset: 0; } }
+  @keyframes appear { to { opacity: 1; } }
+
+  .tagline {
+    text-align: center;
+    font-style: italic;
+    font-size: 19px;
+    color: var(--ink-soft);
+    margin: 42px 0 0;
+  }
+
+  section { margin-top: 70px; }
+  h2.sec {
+    font-size: 12px; font-weight: 600;
+    letter-spacing: 0.26em; text-transform: uppercase;
+    color: var(--slate);
+    margin: 0 0 16px;
+  }
+  section p { margin: 0 0 15px; max-width: 60ch; }
+  ul.perks {
+    list-style: none;
+    padding: 0; margin: 4px 0 18px;
+    max-width: 60ch;
+  }
+  ul.perks li { position: relative; padding: 8px 0 8px 26px; }
+  ul.perks li::before {
+    content: "";
+    position: absolute; left: 3px; top: calc(0.5em + 3px);
+    width: 3px; height: 14px;
+    background: var(--madder);
+  }
+  .email { color: var(--madder); white-space: nowrap; }
+  .email:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+  footer { margin-top: 90px; }
+  .colophon {
+    padding: 22px 0 8px;
+    font-size: 12.5px; color: var(--slate); line-height: 1.8;
+    text-align: center;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    body.js .fade { opacity: 0; transform: translateY(12px); transition: opacity .7s ease, transform .7s ease; }
+    body.js .fade.in { opacity: 1; transform: none; }
+  }
+
+  /* ---- Members sign-in ---- */
+  .login { max-width: 380px; margin: 74px auto 0; }
+  .login .field { margin: 0 0 26px; }
+  .login label {
+    display: block;
+    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+    color: var(--slate); margin-bottom: 6px;
+  }
+  .login input {
+    width: 100%;
+    font: inherit; color: var(--ink);
+    background: transparent;
+    border: none; border-bottom: 1px solid var(--stone);
+    border-radius: 0;
+    padding: 6px 2px 8px;
+  }
+  .login input:focus { outline: none; border-bottom-color: var(--madder); }
+  .btn {
+    font-family: inherit;
+    font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--paper); background: var(--ink);
+    border: none; border-radius: 0;
+    padding: 13px 34px; margin-top: 8px;
+    cursor: pointer;
+  }
+  .btn:hover { background: var(--madder); }
+  .btn:focus-visible { outline: 2px solid var(--madder); outline-offset: 3px; }
+  .notice { font-size: 14.5px; font-style: italic; color: var(--slate); margin-top: 22px; }
+  .backlink { margin-top: 54px; }
+  .backlink a { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--slate); }
+  .backlink a:hover { color: var(--madder); }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <span class="brand">KAPLAN&nbsp;MEIER</span>
+  <nav aria-label="Site">
+    <a href="#practice">The Advisory</a>
+    <a href="#partnerships">Partnerships</a>
+    <a href="#referrals">Referrals</a>
+    <a href="#/members">Members</a>
+  </nav>
+</header>
+
+<main class="sheet">
+<div id="home">
+
+  <div class="masthead">
+    <div class="rule-double" aria-hidden="true"></div>
+    <p class="wordmark">KAPLAN&nbsp;MEIER</p>
+  </div>
+
+  <figure class="fig" aria-label="The Kaplan Meier mark: a descending step curve with a single red tick">
+    <svg viewBox="0 0 560 200" role="img" aria-label="Descending step curve">
+      <path class="stroke" d="M 20 22 H 118 V 52 H 212 V 86 H 318 V 126 H 428 V 164 H 540"
+            fill="none" stroke-width="4.5" stroke-linecap="square" stroke-linejoin="miter"/>
+      <line class="tick" x1="264" y1="75" x2="264" y2="97" stroke-width="4.5" stroke-linecap="square"/>
+    </svg>
+  </figure>
+
+  <p class="tagline fade">Statistically significant travel.</p>
+
+  <section class="fade" id="practice">
+    <h2 class="sec">The Advisory</h2>
+    <p>Kaplan Meier is a private travel advisory for physicians and their families, run by physicians. We know what it takes to actually leave: the call coverage, the block schedule negotiated months out, the ten days you refuse to waste. We plan around all of it.</p>
+    <p>Each itinerary is designed from a blank page, bespoke to the way you travel: solo after a hard stretch, a couple finally off service at the same time, or the whole family over spring break. We take care of the research, the reservations, and the details in between, so a week away actually feels like one.</p>
+  </section>
+
+  <section class="fade" id="partnerships">
+    <h2 class="sec">Partnerships</h2>
+    <p>We book through preferred partnerships with the world&rsquo;s finest hotel brands, including Four Seasons, Rosewood, Belmond, and Aman, along with several hundred more. When we place you at a partner property, the stay comes with more than a reservation:</p>
+    <ul class="perks">
+      <li>A room upgrade, when one can be found</li>
+      <li>Breakfast for two, daily</li>
+      <li>A property credit, usually a hundred dollars toward the spa or a dinner</li>
+      <li>Early check-in and late check-out, where the house can manage it</li>
+      <li>A warmer welcome: the property knows you are our client before you arrive</li>
+      <li>A consult line: if anything comes up mid-trip, call us and we will work it through with the property on your behalf</li>
+    </ul>
+    <p>The rate is the same one you would pay booking directly. The stay is not.</p>
+  </section>
+
+  <section class="fade" id="referrals">
+    <h2 class="sec">Referrals</h2>
+    <p>Our client list stays intentionally short, so new clients join by introduction. We take on a limited number of families each quarter. If someone sent you our way, we would love to hear from you: ask them to make the connection, or write to <a class="email" href="mailto:referrals@kaplanmeier.com?subject=Referral">referrals@kaplanmeier.com</a> and tell us who referred you.</p>
+  </section>
+
+  <section class="fade" id="members">
+    <h2 class="sec">Members</h2>
+    <p>Members can <a class="email" href="#/members">sign in</a> to view itineraries and documents.</p>
+  </section>
+
+</div>
+
+  <div id="members-login" hidden>
+    <div class="masthead">
+      <div class="rule-double" aria-hidden="true"></div>
+      <p class="wordmark">KAPLAN&nbsp;MEIER</p>
+    </div>
+    <section class="login">
+      <h2 class="sec">Members</h2>
+      <p>Sign in to view your itineraries and documents.</p>
+      <form id="login-form" novalidate>
+        <div class="field">
+          <label for="login-email">Email</label>
+          <input id="login-email" name="email" type="email" autocomplete="username" required>
+        </div>
+        <div class="field">
+          <label for="login-password">Password</label>
+          <input id="login-password" name="password" type="password" autocomplete="current-password" required>
+        </div>
+        <button type="submit" class="btn">Sign in</button>
+        <p class="notice" id="login-notice" aria-live="polite" hidden>The members&rsquo; area is opening soon. If you&rsquo;re expecting access, write to <a class="email" href="mailto:referrals@kaplanmeier.com">referrals@kaplanmeier.com</a>.</p>
+      </form>
+      <p class="backlink"><a href="#/">&larr; Return</a></p>
+    </section>
+  </div>
+
+  <footer class="fade">
+    <div class="rule-double" aria-hidden="true"></div>
+    <div class="colophon">
+      <p>© 2026 Kaplan Meier LLC · <a class="email" href="mailto:referrals@kaplanmeier.com">referrals@kaplanmeier.com</a></p>
+      <p>KAPLAN&nbsp;MEIER&trade; is a trademark of Kaplan Meier LLC.</p>
+      <!-- Post-onboarding: add host-agency affiliate disclosure line here, exact wording per Fora onboarding. -->
+    </div>
+  </footer>
+
+</main>
+
+<script>
+  document.body.classList.add('js');
+  (function () {
+    var home = document.getElementById('home');
+    var login = document.getElementById('members-login');
+    function route() {
+      var onLogin = location.hash === '#/members';
+      home.hidden = onLogin;
+      login.hidden = !onLogin;
+      if (onLogin) window.scrollTo(0, 0);
+    }
+    window.addEventListener('hashchange', route);
+    route();
+
+    var form = document.getElementById('login-form');
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      document.getElementById('login-notice').hidden = false;
+    });
+  })();
+  (function () {
+    var els = document.querySelectorAll('.fade');
+    if (!('IntersectionObserver' in window)) {
+      els.forEach(function (el) { el.classList.add('in'); });
+      return;
+    }
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { threshold: 0.12 });
+    els.forEach(function (el) { io.observe(el); });
+  })();
+</script>
+</body>
+</html>
