@@ -119,38 +119,6 @@
     body.js .fade { opacity: 0; transform: translateY(12px); transition: opacity .7s ease, transform .7s ease; }
     body.js .fade.in { opacity: 1; transform: none; }
   }
-
-  /* ---- Members sign-in ---- */
-  .login { max-width: 380px; margin: 74px auto 0; }
-  .login .field { margin: 0 0 26px; }
-  .login label {
-    display: block;
-    font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
-    color: var(--slate); margin-bottom: 6px;
-  }
-  .login input {
-    width: 100%;
-    font: inherit; color: var(--ink);
-    background: transparent;
-    border: none; border-bottom: 1px solid var(--stone);
-    border-radius: 0;
-    padding: 6px 2px 8px;
-  }
-  .login input:focus { outline: none; border-bottom-color: var(--madder); }
-  .btn {
-    font-family: inherit;
-    font-size: 12px; letter-spacing: 0.24em; text-transform: uppercase;
-    color: var(--paper); background: var(--ink);
-    border: none; border-radius: 0;
-    padding: 13px 34px; margin-top: 8px;
-    cursor: pointer;
-  }
-  .btn:hover { background: var(--madder); }
-  .btn:focus-visible { outline: 2px solid var(--madder); outline-offset: 3px; }
-  .notice { font-size: 14.5px; font-style: italic; color: var(--slate); margin-top: 22px; }
-  .backlink { margin-top: 54px; }
-  .backlink a { font-size: 12px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--slate); }
-  .backlink a:hover { color: var(--madder); }
 </style>
 </head>
 <body>
@@ -159,7 +127,7 @@
   <span class="brand">KAPLAN&nbsp;MEIER</span>
   <nav aria-label="Site">
     <a href="#referrals">Referrals</a>
-    <a href="#/members">Members</a>
+    <a href="https://trips.foratravel.com/eddie-zhang/book">Members</a>
   </nav>
 </header>
 
@@ -191,34 +159,10 @@
 
   <section class="fade" id="members">
     <h2 class="sec">Members</h2>
-    <p>Members can <a class="email" href="#/members">sign in</a> to view itineraries and documents.</p>
+    <p>Members can <a class="email" href="https://trips.foratravel.com/eddie-zhang/book">sign in</a> to view itineraries and documents.</p>
   </section>
 
 </div>
-
-  <div id="members-login" hidden>
-    <div class="masthead">
-      <div class="rule-double" aria-hidden="true"></div>
-      <p class="wordmark">KAPLAN&nbsp;MEIER</p>
-    </div>
-    <section class="login">
-      <h2 class="sec">Members</h2>
-      <p>Sign in to view your itineraries and documents.</p>
-      <form id="login-form" novalidate>
-        <div class="field">
-          <label for="login-email">Email</label>
-          <input id="login-email" name="email" type="email" autocomplete="username" required>
-        </div>
-        <div class="field">
-          <label for="login-password">Password</label>
-          <input id="login-password" name="password" type="password" autocomplete="current-password" required>
-        </div>
-        <button type="submit" class="btn">Sign in</button>
-        <p class="notice" id="login-notice" aria-live="polite" hidden>The members&rsquo; area is opening soon. If you&rsquo;re expecting access, write to <a class="email" href="mailto:referrals@kaplanmeier.com">referrals@kaplanmeier.com</a>.</p>
-      </form>
-      <p class="backlink"><a href="#/">&larr; Return</a></p>
-    </section>
-  </div>
 
   <footer class="fade">
     <div class="rule-double" aria-hidden="true"></div>
@@ -233,24 +177,8 @@
 
 <script>
   document.body.classList.add('js');
-  (function () {
-    var home = document.getElementById('home');
-    var login = document.getElementById('members-login');
-    function route() {
-      var onLogin = location.hash === '#/members';
-      home.hidden = onLogin;
-      login.hidden = !onLogin;
-      if (onLogin) window.scrollTo(0, 0);
-    }
-    window.addEventListener('hashchange', route);
-    route();
-
-    var form = document.getElementById('login-form');
-    form.addEventListener('submit', function (e) {
-      e.preventDefault();
-      document.getElementById('login-notice').hidden = false;
-    });
-  })();
+  // Old links to the placeholder sign-in page go to the Fora portal
+  if (location.hash === '#/members') location.replace('https://trips.foratravel.com/eddie-zhang/book');
   (function () {
     var els = document.querySelectorAll('.fade');
     if (!('IntersectionObserver' in window)) {
