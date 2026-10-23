@@ -132,8 +132,6 @@
 </header>
 
 <main class="sheet">
-<div id="home">
-
   <div class="masthead">
     <div class="rule-double" aria-hidden="true"></div>
     <p class="wordmark">KAPLAN&nbsp;MEIER</p>
@@ -157,13 +155,6 @@
     <p>Our client list stays intentionally short, so new clients join by introduction. We take on a limited number of families each quarter. If someone sent you our way, we would love to hear from you: ask them to make the connection, or write to <a class="email" href="mailto:referrals@kaplanmeier.com?subject=Referral">referrals@kaplanmeier.com</a> and tell us who referred you.</p>
   </section>
 
-  <section class="fade" id="members">
-    <h2 class="sec">Members</h2>
-    <p>Members can <a class="email" href="https://trips.foratravel.com/eddie-zhang/book">sign in</a> to view itineraries and documents.</p>
-  </section>
-
-</div>
-
   <footer class="fade">
     <div class="rule-double" aria-hidden="true"></div>
     <div class="colophon">
@@ -177,8 +168,6 @@
 
 <script>
   document.body.classList.add('js');
-  // Old links to the placeholder sign-in page go to the Fora portal
-  if (location.hash === '#/members') location.replace('https://trips.foratravel.com/eddie-zhang/book');
   (function () {
     var els = document.querySelectorAll('.fade');
     if (!('IntersectionObserver' in window)) {
